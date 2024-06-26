@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_ACCESS_TOKEN } from '@env';
 import { FontAwesome } from '@expo/vector-icons';
 import { Movie } from '../types/App';
+import MovieList from "../components/movies/MovieList";
+
 
 const MovieDetail = ({ route }: any): JSX.Element => {
   const { id } = route.params;
@@ -82,13 +84,13 @@ const MovieDetail = ({ route }: any): JSX.Element => {
     try {
       const initialData: string | null = await AsyncStorage.getItem('@FavoriteList');
       let favMovieList: Movie[] = [];
-  
+
       if (initialData !== null) {
-          favMovieList = [...JSON.parse(initialData), movie];
+        favMovieList = [...JSON.parse(initialData), movie];
       } else {
-          favMovieList = [movie];
+        favMovieList = [movie];
       }
-      
+
       await AsyncStorage.setItem('@FavoriteList', JSON.stringify(favMovieList));
       setIsFavorite(true);
     } catch (error) {
@@ -99,12 +101,12 @@ const MovieDetail = ({ route }: any): JSX.Element => {
   const removeFavorite = async (movie: Movie): Promise<void> => {
     try {
       const initialData: string | null = await AsyncStorage.getItem('@FavoriteList');
-  
+
       if (initialData !== null) {
         const parsedData: Movie[] = JSON.parse(initialData);
         const updatedList: Movie[] = parsedData.filter((m) => m.id !== movie.id);
         await AsyncStorage.setItem('@FavoriteList', JSON.stringify(updatedList));
-  
+
         setIsFavorite(false);
       }
     } catch (error) {
@@ -158,34 +160,33 @@ const MovieDetail = ({ route }: any): JSX.Element => {
         <Text style={styles.heading}>Overview</Text>
         <Text style={styles.overview}>{movie.overview}</Text>
         <Text style={styles.heading}>Details</Text>
-        <Text>Language: {movie.original_language}</Text>
-        <Text>Release Date: {movie.release_date}</Text>
-        <Text>Popularity: {movie.popularity}</Text>
-        <Text>Votes: {movie.vote_count}</Text>
-        <Text style={styles.heading}>Similar Movies</Text>
-        <FlatList
-          style={styles.similarMoviesList}
-          horizontal
-          data={similarMovies}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.similarMovieItem}
-              onPress={() => {
-                
-              }}
-            >
-              <ImageBackground
-                style={styles.similarMovieImage}
-                source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
-                resizeMode="cover"
-              >
-                <View style={styles.overlay}>
-                  <Text style={styles.similarMovieTitle}>{item.title}</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.id.toString()}
+        <View style={styles.detailContainer}>
+          <View >
+            <Text style={styles.label}>Release Date</Text>
+            <Text style={styles.additionalInfo}>{movie.release_date}</Text>
+          </View>
+          <View >
+            <Text style={styles.label}>Popularity</Text>
+            <Text style={styles.additionalInfo}>{movie.popularity}</Text>
+          </View>
+        </View>
+        <View style={styles.detailContainer}>
+          <View >
+            <Text style={styles.label}>Votes</Text>
+            <Text style={styles.additionalInfo}>{movie.vote_count}</Text>
+          </View>
+          <View >
+            <Text style={styles.label}>Language</Text>
+            <Text style={styles.additionalInfo}>{movie.original_language}</Text>
+          </View>
+        </View>
+      </View>
+      <View style={styles.recommendationContainer}>
+        <MovieList
+          key='Recommended Movies'
+          title='Recommended Movies'
+          path={`movie/${movie.id}/recommendations?language=en-US&page=1`}
+          coverType='poster'
         />
       </View>
     </ScrollView>
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   container: {
-    padding: 10,
+    padding: 16,
   },
   heading: {
     fontSize: 20,
@@ -256,6 +257,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  additionalInfo: {
+    fontSize: 14,
+    color: 'black',
+    marginTop: 5,
+  },
+  detailContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  label: {
+    fontWeight: 'bold',
+    marginRight: 5,
+  },
+  recommendationContainer: {
+    padding: 16,
   },
 });
 
