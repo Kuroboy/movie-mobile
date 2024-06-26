@@ -39,7 +39,12 @@ const MovieDetail = ({ route }: any): JSX.Element => {
     };
 
     fetch(url, options)
-      .then(async (response) => await response.json())
+      .then(async (response) => {
+        if (response.status === 404) {
+          throw new Error('Movie not found');
+        }
+        return await response.json();
+      })
       .then((response) => {
         setMovie(response);
         setLoading(false);
@@ -61,7 +66,12 @@ const MovieDetail = ({ route }: any): JSX.Element => {
     };
 
     fetch(url, options)
-      .then(async (response) => await response.json())
+      .then(async (response) => {
+        if (response.status === 404) {
+          throw new Error('Similar movies not found');
+        }
+        return await response.json();
+      })
       .then((response) => {
         setSimilarMovies(response.results);
       })
