@@ -7,7 +7,7 @@ import { Movie } from '../types/App';
 import MovieList from "../components/movies/MovieList";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { LanguageEnum } from '../types/Enum'
 
 const MovieDetail = ({ route }: any): JSX.Element => {
   const { id } = route.params;
@@ -205,7 +205,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
           </View>
           <View >
             <Text style={styles.label}>Language</Text>
-            <Text style={styles.additionalInfo}>{movie.original_language}</Text>
+            <Text style={styles.additionalInfo}>{LanguageEnum[movie.original_language as keyof typeof LanguageEnum]}</Text>
           </View>
         </View>
       </View>
