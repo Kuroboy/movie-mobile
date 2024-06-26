@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ImageBackground, StyleSheet, ScrollView, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, ImageBackground, StyleSheet, ScrollView, ActivityIndicator, FlatList, TouchableOpacity, Pressable, Share } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_ACCESS_TOKEN } from '@env';
 import { FontAwesome } from '@expo/vector-icons';
 import { Movie } from '../types/App';
 import MovieList from "../components/movies/MovieList";
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 
 const MovieDetail = ({ route }: any): JSX.Element => {
@@ -13,6 +15,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
   const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchMovieDetail();
@@ -135,12 +138,37 @@ const MovieDetail = ({ route }: any): JSX.Element => {
     );
   }
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `${movie.title}\n\n${movie.overview}\n\n${movie.homepage}`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          console.log('Shared with activity type of: ' + result.activityType);
+        } else {
+          console.log('Shared');
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log('Dismissed');
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <ScrollView>
       <ImageBackground
         style={styles.backdrop}
         source={{ uri: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` }}
       >
+        <Pressable style={styles.backIcon} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </Pressable>
+        <Pressable style={styles.shareIcon} onPress={onShare}>
+          <Ionicons name="share-social" size={24} color="white" />
+        </Pressable>
         <View style={styles.overlay}>
           <View style={styles.titleContainer}>
             <View>
@@ -275,6 +303,16 @@ const styles = StyleSheet.create({
   },
   recommendationContainer: {
     padding: 16,
+  },
+  backIcon: {
+    position: 'absolute',
+    left: 16,
+    top: 16,
+  },
+  shareIcon: {
+    position: 'absolute',
+    right: 16,
+    top: 16,
   },
 });
 

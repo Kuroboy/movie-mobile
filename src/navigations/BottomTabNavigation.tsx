@@ -13,6 +13,7 @@ const BottomTabNavigator = () => (
       name="HomeStacNavigation"
       component={HomeStackNavigation}
       options={{
+        title: 'Home',
         tabBarIcon: ({ color }) => (
           <Feather name="home" size={28} color={color} />
         ),
@@ -23,6 +24,7 @@ const BottomTabNavigator = () => (
       name="Search"
       component={Search}
       options={{
+        title: 'Search',
         tabBarIcon: ({ color }) => (
           <Feather name="search" size={28} color={color} />
         ),
@@ -33,6 +35,7 @@ const BottomTabNavigator = () => (
       name="FavoriteStackNavigation"
       component={FavoriteStackNavigation}
       options={{
+        title: 'Favorite',
         tabBarIcon: ({ color }) => (
           <Feather name="heart" size={28} color={color} />
         ),
