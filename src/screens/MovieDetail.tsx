@@ -7,7 +7,7 @@ import { Movie } from '../types/App';
 import MovieList from "../components/movies/MovieList";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { LanguageEnum } from '../types/Enum'
 
 const MovieDetail = ({ route }: any): JSX.Element => {
   const { id } = route.params;
@@ -39,7 +39,12 @@ const MovieDetail = ({ route }: any): JSX.Element => {
     };
 
     fetch(url, options)
-      .then(async (response) => await response.json())
+      .then(async (response) => {
+        if (response.status === 404) {
+          throw new Error('Movie not found');
+        }
+        return await response.json();
+      })
       .then((response) => {
         setMovie(response);
         setLoading(false);
@@ -61,7 +66,12 @@ const MovieDetail = ({ route }: any): JSX.Element => {
     };
 
     fetch(url, options)
-      .then(async (response) => await response.json())
+      .then(async (response) => {
+        if (response.status === 404) {
+          throw new Error('Similar movies not found');
+        }
+        return await response.json();
+      })
       .then((response) => {
         setSimilarMovies(response.results);
       })
@@ -205,7 +215,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
           </View>
           <View >
             <Text style={styles.label}>Language</Text>
-            <Text style={styles.additionalInfo}>{movie.original_language}</Text>
+            <Text style={styles.additionalInfo}>{LanguageEnum[movie.original_language as keyof typeof LanguageEnum]}</Text>
           </View>
         </View>
       </View>
