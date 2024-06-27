@@ -25,7 +25,7 @@ const KeywordSearch = () => {
     };
 
     if (keywordValue) {
-      fetch(`https://api.themoviedb.org/3/search/collection?include_adult=false&language=en-US&page=1&query=${keywordValue}`, options)
+      fetch(`https://api.themoviedb.org/3/search/movie?query=${keywordValue}`, options)
         .then(async (response) => await response.json())
         .then((data) => {
           setSearchResult(data.results || []);
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   columnWrapper: {
     justifyContent: "space-between",
-    flexDirection:'row',
+    flexDirection: 'row',
     padding: 8,
   },
   flatListContent: {

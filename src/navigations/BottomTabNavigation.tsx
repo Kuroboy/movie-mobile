@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
 import HomeStackNavigation from './HomeStackNavigation';
-import Search from '../screens/Search';
+import Search from './SearchStackNavigation';
 import FavoriteStackNavigation from "./FavoriteStackNavigation"
 
 const Tab = createBottomTabNavigator();
