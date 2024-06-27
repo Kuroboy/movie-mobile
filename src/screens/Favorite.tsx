@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
-import MovieItem from '../components/movies/MovieItem'; // Pastikan lokasi impor sesuai dengan struktur proyek Anda
+import MovieItem from '../components/movies/MovieItem'; 
 import { Movie } from '../types/App';
 
 const Favorite = () => {
   const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
-  const isFocused = useIsFocused(); // Hook untuk mendeteksi saat layar ini difokuskan
+  const isFocused = useIsFocused(); 
 
   useEffect(() => {
     if (isFocused) {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   columnWrapper: {
     justifyContent: "space-between",
-    flexDirection: 'row', // Ubah menjadi 'row' untuk horizontal dari kiri ke kanan
+    flexDirection: 'row', 
     padding: 8,
   },
   flatListContent: {

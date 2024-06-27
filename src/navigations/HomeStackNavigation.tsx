@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screens/Home';
 import MovieDetail from '../screens/MovieDetail';
 import Favorite from '../screens/Favorite';
+import Search from '../screens/Search';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,13 @@ const HomeStackNavigation = () => {
       <Stack.Screen 
         name="Favorite" 
         component={Favorite} 
+        options={{
+          headerShown: false
+        }} 
+      />
+      <Stack.Screen 
+        name="Search" 
+        component={Search} 
         options={{
           headerShown: false
         }} 
