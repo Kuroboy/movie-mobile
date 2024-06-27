@@ -25,7 +25,7 @@ const KeywordSearch = () => {
     };
 
     if (keywordValue) {
-      fetch(`https://api.themoviedb.org/3/search/collection?include_adult=false&language=en-US&page=1&query=${keywordValue}`, options)
+      fetch(`https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${keywordValue}`, options)
         .then(async (response) => await response.json())
         .then((data) => {
           setSearchResult(data.results || []);
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     marginVertical: 16,
-    borderWidth: 1,         // Menambahkan border dengan lebar 1 piksel
-    borderColor: 'black',   // Menambahkan warna border (misalnya hitam)
+    borderWidth: 1,        
+    borderColor: 'black',   
   },
   noResultText: {
     textAlign: 'center',

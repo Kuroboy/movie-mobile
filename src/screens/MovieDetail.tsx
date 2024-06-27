@@ -12,7 +12,6 @@ import { LanguageEnum } from '../types/Enum'
 const MovieDetail = ({ route }: any): JSX.Element => {
   const { id } = route.params;
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const navigation = useNavigation();
@@ -65,19 +64,6 @@ const MovieDetail = ({ route }: any): JSX.Element => {
       },
     };
 
-    fetch(url, options)
-      .then(async (response) => {
-        if (response.status === 404) {
-          throw new Error('Similar movies not found');
-        }
-        return await response.json();
-      })
-      .then((response) => {
-        setSimilarMovies(response.results);
-      })
-      .catch((errorResponse) => {
-        console.log(errorResponse);
-      });
   };
 
   const checkIfFavorite = async () => {
@@ -272,24 +258,6 @@ const styles = StyleSheet.create({
   overview: {
     fontSize: 16,
     marginVertical: 10,
-  },
-  similarMoviesList: {
-    marginTop: 10,
-  },
-  similarMovieItem: {
-    marginRight: 10,
-  },
-  similarMovieImage: {
-    width: 100,
-    height: 150,
-    justifyContent: 'flex-end',
-  },
-  similarMovieTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: 'white',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 5,
   },
   loadingContainer: {
     flex: 1,
